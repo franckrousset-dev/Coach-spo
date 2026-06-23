@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Coach SPO — Franck</title>
+<style>
+:root{--bg:#0D0D0D;--bg2:#161616;--bg3:#1E1E1E;--border:#2A2A2A;--text:#F0F0F0;--text2:#A0A0A0;--text3:#606060;--red:#E63946;--amber:#F4A261;--green:#52B788;--purple:#7B6FD4;--teal:#48CAE4;--font:-apple-system,'SF Pro Display',BlinkMacSystemFont,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;overscroll-behavior:none;}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:80px;}
+.hdr{padding:18px 16px 10px;border-bottom:0.5px solid var(--border);}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.hdr-title{font-size:22px;font-weight:700;letter-spacing:-0.5px;}
+.hdr-title span{color:var(--red);}
+.hdr-sub{font-size:11px;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase;}
+.hdr-right{display:flex;align-items:center;gap:6px;}
+.ver{font-size:10px;color:var(--text3);background:var(--bg3);padding:2px 7px;border-radius:10px;}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0;}
+.sync-dot.ok{background:var(--green);}
+.sync-dot.err{background:var(--red);}
+.sync-dot.loading{background:var(--amber);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.tabs{display:flex;background:var(--bg2);border-bottom:0.5px solid var(--border);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:100;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;padding:12px 13px;font-size:12px;font-weight:500;border:none;background:none;color:var(--text3);border-bottom:2px solid transparent;cursor:pointer;}
+.tab.active{color:var(--text);border-bottom-color:var(--red);}
+.panel{display:none;padding:14px 16px;}
+.panel.active{display:block;}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;letter-spacing:0.04em;text-transform:uppercase;}
+.b-e1{background:rgba(230,57,70,0.2);color:var(--red);}
+.b-e2{background:rgba(244,162,97,0.2);color:var(--amber);}
+.b-e3{background:rgba(82,183,136,0.2);color:var(--green);}
+.b-new{background:rgba(72,202,228,0.2);color:var(--teal);}
+.card{background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+.card-hdr{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:8px;}
+.card-title{font-size:13px;font-weight:600;color:var(--text);}
+.card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.card-body{display:none;border-top:0.5px solid var(--border);}
+.card-body.open{display:block;}
+.chev{font-size:13px;color:var(--text3);flex-shrink:0;transition:transform 0.2s;}
+.card-hdr.open .chev{transform:rotate(180deg);}
+.exo{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border);align-items:start;}
+.exo:last-child{border-bottom:none;}
+.exo.hl{background:rgba(72,202,228,0.04);border-left:2px solid var(--teal);}
+.exo.hl-green{background:rgba(82,183,136,0.04);border-left:2px solid var(--green);}
+.exo-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.exo-note{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:4px;}
+.exo-note.g{color:var(--teal);}
+.exo-note.gr{color:var(--green);}
+.tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:8px;font-weight:500;margin-right:3px;margin-top:2px;}
+.tag-r{background:rgba(255,255,255,0.07);color:var(--text3);}
+.tag-p{background:rgba(82,183,136,0.15);color:var(--green);}
+.tag-c{background:rgba(123,111,212,0.2);color:var(--purple);}
+.tag-s{background:rgba(244,162,97,0.15);color:var(--amber);}
+.exo-r{text-align:right;}
+.exo-sets{font-size:13px;font-weight:600;color:var(--text);}
+.exo-pct{font-size:11px;color:var(--text3);margin-top:2px;}
+.ib{background:rgba(123,111,212,0.1);border-left:3px solid var(--purple);padding:8px 12px;font-size:12px;color:#B0A8FF;line-height:1.6;margin:10px 14px;border-radius:0 8px 8px 0;}
+.wb{background:rgba(230,57,70,0.1);border-left:3px solid var(--red);padding:8px 12px;font-size:12px;color:#F08080;line-height:1.6;margin:10px 14px;border-radius:0 8px 8px 0;}
+.gb{background:rgba(82,183,136,0.1);border-left:3px solid var(--green);padding:8px 12px;font-size:12px;color:var(--green);line-height:1.6;margin:10px 14px;border-radius:0 8px 8px 0;}
+.sep{text-align:center;padding:6px;font-size:11px;color:var(--text3);border:0.5px dashed var(--border);border-radius:8px;margin-bottom:10px;letter-spacing:0.05em;text-transform:uppercase;}
+.spo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.spo-cell{border-radius:10px;padding:10px;text-align:center;}
+.spo-e1{background:rgba(230,57,70,0.1);}
+.spo-e2{background:rgba(244,162,97,0.1);}
+.spo-e3{background:rgba(82,183,136,0.1);}
+.spo-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.spo-e1 .spo-label{color:var(--red);}
+.spo-e2 .spo-label{color:var(--amber);}
+.spo-e3 .spo-label{color:var(--green);}
+.spo-reps{font-size:14px;font-weight:700;color:var(--text);}
+.spo-pct{font-size:11px;color:var(--text3);margin-top:2px;}
+.spo-repos{font-size:10px;color:var(--text3);margin-top:4px;border-top:0.5px solid rgba(255,255,255,0.05);padding-top:4px;}
+.sw{display:flex;gap:5px;background:var(--bg3);border-radius:10px;padding:3px;margin-bottom:12px;}
+.sw-btn{flex:1;padding:7px;font-size:12px;border:none;border-radius:8px;cursor:pointer;background:none;color:var(--text3);font-weight:500;transition:all 0.15s;}
+.sw-btn.active{background:var(--bg2);color:var(--text);border:0.5px solid var(--border);}
+.day-btns{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.day-btn{padding:6px 10px;font-size:11px;border:0.5px solid var(--border);border-radius:20px;background:none;color:var(--text3);cursor:pointer;white-space:nowrap;font-weight:500;}
+.day-btn.active{background:var(--red);color:white;border-color:var(--red);}
+.s-exo{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;}
+.s-exo.tbar{border-color:var(--teal);}
+.s-exo.fp{border-color:var(--green);}
+.s-exo-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
+.s-exo-name{font-size:13px;font-weight:600;color:var(--text);}
+.s-repos{font-size:10px;color:var(--text3);}
+.s-info{font-size:11px;color:var(--text3);margin-bottom:8px;}
+.sets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.set-cell{background:var(--bg3);border-radius:8px;padding:5px;}
+.set-lbl{font-size:10px;color:var(--text3);margin-bottom:2px;}
+.set-inp{width:100%;background:var(--bg);border:0.5px solid var(--border);border-radius:5px;color:var(--text);font-size:12px;padding:4px;text-align:center;margin-top:3px;}
+.set-inp.has-prev{border-color:rgba(123,111,212,0.4);background:rgba(123,111,212,0.05);}
+.prev-hint{font-size:9px;color:var(--purple);text-align:center;margin-top:1px;opacity:0.8;}
+.rpe-global{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;}
+.rpe-g-row{display:flex;gap:6px;margin:8px 0;}
+.rpe-g-btn{flex:1;height:36px;border-radius:8px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text3);font-size:14px;font-weight:700;cursor:pointer;}
+.rm-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0;}
+.rm-zone{background:var(--bg3);border-radius:10px;padding:10px;text-align:center;}
+.rm-zone-label{font-size:10px;color:var(--text3);margin-bottom:4px;}
+.rm-zone-val{font-size:16px;font-weight:700;color:var(--text);}
+.rm-zone-sub{font-size:10px;color:var(--text3);margin-top:2px;}
+.rm-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
+.rm-table th{text-align:left;padding:6px 8px;background:var(--bg3);color:var(--text3);font-weight:500;border-bottom:0.5px solid var(--border);font-size:11px;}
+.rm-table td{padding:6px 8px;border-bottom:0.5px solid var(--border);color:var(--text);}
+.rm-table tr:last-child td{border-bottom:none;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+.field label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;}
+.field select,.field input[type=number]{background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:10px 12px;width:100%;-webkit-appearance:none;}
+.btn{width:100%;padding:12px;background:var(--red);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;}
+.btn:disabled{opacity:0.5;cursor:not-allowed;}
+.confirm{font-size:12px;color:var(--green);margin-left:8px;display:none;}
+.g-phase{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.g-hdr{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.g-title{font-size:13px;font-weight:600;}
+.g-body{display:none;padding:10px 14px;border-top:0.5px solid var(--border);}
+.g-body.open{display:block;}
+.g-exo{display:flex;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:13px;}
+.g-exo:last-child{border-bottom:none;}
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 160px);}
+.chat-msgs{flex:1;overflow-y:auto;padding:10px 0;display:flex;flex-direction:column;gap:8px;}
+.msg{max-width:88%;padding:10px 13px;border-radius:16px;font-size:13px;line-height:1.6;}
+.msg-c{background:var(--bg2);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;border:0.5px solid var(--border);}
+.msg-u{background:var(--red);color:white;align-self:flex-end;border-bottom-right-radius:4px;}
+.msg-l{opacity:.5;font-style:italic;}
+.chat-input-row{display:flex;gap:8px;padding:8px 0;}
+.chat-input-row input{flex:1;background:var(--bg2);border:0.5px solid var(--border);border-radius:20px;color:var(--text);font-size:13px;padding:10px 14px;}
+.chat-input-row button{width:40px;height:40px;background:var(--red);border:none;border-radius:50%;color:white;font-size:16px;cursor:pointer;flex-shrink:0;}
+.salle-note{font-size:11px;padding:6px 10px;border-radius:8px;margin-bottom:8px;line-height:1.5;}
+.salle-fp{background:rgba(82,183,136,0.1);color:var(--green);}
+.salle-jr{background:rgba(244,162,97,0.1);color:var(--amber);}
+/* Historique séance */
+.histo-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;}
+.histo-date{font-size:11px;color:var(--text3);margin-bottom:4px;}
+.histo-exo{font-size:12px;color:var(--text2);padding:2px 0;}
+.histo-series{font-size:11px;color:var(--text3);}
+.histo-rpe{font-size:10px;padding:1px 5px;border-radius:6px;margin-left:4px;}
+/* Onglet historique */
+.hist-filter{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.hist-filter-btn{padding:5px 10px;font-size:11px;border:0.5px solid var(--border);border-radius:20px;background:none;color:var(--text3);cursor:pointer;}
+.hist-filter-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+/* Banner sync status */
+.sync-banner{display:none;padding:6px 12px;font-size:11px;text-align:center;position:sticky;top:42px;z-index:99;}
+.sync-banner.show{display:block;}
+.sync-banner.ok{background:rgba(82,183,136,0.15);color:var(--green);}
+.sync-banner.err{background:rgba(230,57,70,0.15);color:#F08080;}
+.sync-banner.loading{background:rgba(244,162,97,0.15);color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-title">Coach <span>SPO</span></div>
+    <div class="hdr-right">
+      <div class="sync-dot" id="sync-dot" title="Statut Supabase"></div>
+      <span class="ver">v4.0</span>
+    </div>
+  </div>
+  <div class="hdr-sub">Franck · Push Pull Legs · Haute fréquence</div>
+</div>
+
+<div class="sync-banner" id="sync-banner"></div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('prog')">Programme</button>
+  <button class="tab" onclick="showTab('seance')">Séance</button>
+  <button class="tab" onclick="showTab('rm')">1RM</button>
+  <button class="tab" onclick="showTab('histo')">Historique</button>
+  <button class="tab" onclick="showTab('gainage')">Gainage</button>
+  <button class="tab" onclick="showTab('chat')">Coach IA</button>
+</div>
+
+<!-- PROGRAMME -->
+<div id="tab-prog" class="panel active">
+  <div class="spo-grid">
+    <div class="spo-cell spo-e1"><div class="spo-label">E1</div><div class="spo-reps">6–10</div><div class="spo-pct">78% 1RM</div><div class="spo-repos">repos 2'30–3'</div></div>
+    <div class="spo-cell spo-e2"><div class="spo-label">E2</div><div class="spo-reps">10–15</div><div class="spo-pct">68% 1RM</div><div class="spo-repos">repos 90s–2'</div></div>
+    <div class="spo-cell spo-e3"><div class="spo-label">E3</div><div class="spo-reps">15–25</div><div class="spo-pct">57% 1RM</div><div class="spo-repos">repos 45–60s</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr" onclick="togCard(this,'cb1')">
+      <div><div class="card-title">Jour 1 — Push A <span class="badge b-e1">E1 lourd</span></div><div class="card-sub">Pecs 3 angles · Épaules · Triceps</div></div>
+      <span class="chev">▼</span>
+    </div>
+    <div id="cb1" class="card-body">
+      <div class="wb">Codman 30s/côté + rotation externe légère 2×15 avant toute charge.</div>
+      <div class="exo"><div><div class="exo-name">1. Développé haltères 15° ou plat</div><div class="exo-note">Rotation A/B · coudes 45° · pas de descente forcée · tension mécanique libre</div><span class="tag tag-r">repos 2'30–3'</span></div><div class="exo-r"><div class="exo-sets">3×6-8</div><div class="exo-pct">78%</div></div></div>
+      <div class="exo hl-green"><div><div class="exo-name">2. Machine déclinée Technogym <span class="badge b-new" style="font-size:9px;">FP</span></div><div class="exo-note gr">Faisceau sternal inférieur · poussée vers le bas · zéro implication deltoïde antérieur · épaule très protégée · chargement disques</div><span class="tag tag-r">repos 2'30</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">3. Pec deck machine</div><div class="exo-note">Faisceau moyen/interne · contraction 1s · finition</div><span class="tag tag-r">repos 90s</span></div><div class="exo-r"><div class="exo-sets">3×10-12</div><div class="exo-pct">70%</div></div></div>
+      <div class="exo"><div><div class="exo-name">4. Élévation latérale poulie basse</div><div class="exo-note">Arc 30–60° max · stop à l'horizontale</div><span class="tag tag-c">repos 60s</span></div><div class="exo-r"><div class="exo-sets">3×10-12</div><div class="exo-pct">70%</div></div></div>
+      <div class="exo"><div><div class="exo-name">5. Triceps poulie barre droite</div><div class="exo-note">Coudes fixes · extension complète 1s</div><span class="tag tag-r">repos 2'</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">6. Oiseau poulie basse croisée</div><div class="exo-note">Debout penché 45° · bras croisés devant · arc vers l'arrière · 30° sous horizontale</div><span class="tag tag-c">repos 60s</span></div><div class="exo-r"><div class="exo-sets">3×12</div><div class="exo-pct">67%</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr" onclick="togCard(this,'cb2')">
+      <div><div class="card-title">Jour 2 — Pull A <span class="badge b-e1">E1 lourd</span></div><div class="card-sub">Dos · Biceps · Coiffe · 5 prises</div></div>
+      <span class="chev">▼</span>
+    </div>
+    <div id="cb2" class="card-body">
+      <div class="ib">5 prises distinctes : pronation large → pronation moy → neutre large → pronation large → neutre rapprochée → supination. Zéro redondance.</div>
+      <div class="exo"><div><div class="exo-name">1. Tirage poulie haute fixe</div><div class="exo-note">Poulie haute barre fixe · épaules basses · coudes vers hanches</div><span class="tag tag-p">Pronation large</span><span class="tag tag-r">repos 2'30–3'</span></div><div class="exo-r"><div class="exo-sets">3×6-8</div><div class="exo-pct">78%</div></div></div>
+      <div class="exo"><div><div class="exo-name">2. Rowing barre</div><div class="exo-note">Coudes 45° · pas de balancier · rétraction scapulaire 2s</div><span class="tag tag-p">Pronation moyenne</span><span class="tag tag-r">repos 2'30–3'</span></div><div class="exo-r"><div class="exo-sets">3×6-8</div><div class="exo-pct">78%</div></div></div>
+      <div class="exo"><div><div class="exo-name">3. Rowing Hammer Strength</div><div class="exo-note">Unilatéral · contraction max · G+D puis repos</div><span class="tag tag-p">Neutre large · unilat</span><span class="tag tag-r">repos 2'</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">4. Rowing Technogym depuis devant</div><div class="exo-note">Tirage horizontal · bilatéral · rétraction 2s · trapèzes moyens + rhomboïdes</div><span class="tag tag-p">Pronation large</span><span class="tag tag-r">repos 2'</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo hl"><div><div class="exo-name">5. Rowing T-bar <span class="badge b-e2" style="font-size:9px;">E2</span></div><div class="exo-note g">Grand dorsal inférieur · coudes au corps · contraction 1s</div><span class="tag tag-p">Neutre rapprochée</span><span class="tag tag-r">repos 90s</span></div><div class="exo-r"><div class="exo-sets">3×10-12</div><div class="exo-pct">68%</div></div></div>
+      <div class="exo"><div><div class="exo-name">6. Curl barre EZ</div><div class="exo-note">Coudes fixes · supination maintenue</div><span class="tag tag-p">Supination</span><span class="tag tag-r">repos 2'</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">7. Rotation externe poulie basse</div><div class="exo-note">Rotateurs externes · coude fixe au corps</div><span class="tag tag-c">repos 60s toujours</span></div><div class="exo-r"><div class="exo-sets">3×15</div><div class="exo-pct">55%</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr" onclick="togCard(this,'cb3')">
+      <div><div class="card-title">Jour 3 — Legs A <span class="badge b-e1">E1 lourd</span></div><div class="card-sub">Quadriceps · Ischios · Fessiers · Mollets</div></div>
+      <span class="chev">▼</span>
+    </div>
+    <div id="cb3" class="card-body">
+      <div class="exo"><div><div class="exo-name">1. Presse 45°</div><div class="exo-note">Pieds bas E1 quad max · Gym80 +10%</div><span class="tag tag-r">repos 2'30–3'</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">2. Leg curl allongé machine</div><div class="exo-note">Fémurs courts → isolation indispensable · descente contrôlée 3s</div><span class="tag tag-r">repos 2'30</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">3. Pendulum squat (FP) · Hack squat (JR)</div><div class="exo-note">Pendulum = arc naturel idéal · Hack squat = genoux dans l'axe</div><span class="tag tag-r">repos 2'30</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">4. Hip thrust machine</div><div class="exo-note">Isométrique 1s en haut · tronc long = avantage biomécanique</div><span class="tag tag-r">repos 2'</span></div><div class="exo-r"><div class="exo-sets">3×10</div><div class="exo-pct">72%</div></div></div>
+      <div class="exo"><div><div class="exo-name">5. Mollets debout machine</div><div class="exo-note">Amplitude complète · descente lente 3s</div><span class="tag tag-r">repos 60s</span></div><div class="exo-r"><div class="exo-sets">4×12</div><div class="exo-pct">67%</div></div></div>
+    </div>
+  </div>
+
+  <div class="sep">Jour 4 — Repos</div>
+
+  <div class="card">
+    <div class="card-hdr" onclick="togCard(this,'cb5')">
+      <div><div class="card-title">Jour 5 — Push B <span class="badge b-e2">E2 volume</span></div><div class="card-sub">Pecs 3 angles · Épaules · Triceps — métabolique</div></div>
+      <span class="chev">▼</span>
+    </div>
+    <div id="cb5" class="card-body">
+      <div class="wb">Codman + rotation externe avant séance.</div>
+      <div class="gb">Rotation selon salle : FP → poussée convergente Technogym · JR → Standing chest press Gym80.</div>
+      <div class="exo hl-green"><div><div class="exo-name">1A. Poussée convergente Technogym <span class="badge b-new" style="font-size:9px;">FP</span></div><div class="exo-note gr">Faisceau moyen · convergence = contraction centrale max · épaule-friendly</div><span class="tag tag-r">repos 90s–2'</span></div><div class="exo-r"><div class="exo-sets">4×12-15</div><div class="exo-pct">67%</div></div></div>
+      <div class="exo hl"><div><div class="exo-name">1B. Standing chest press Gym80 <span class="badge b-new" style="font-size:9px;">JR</span></div><div class="exo-note g">Poussée pectorale debout · faisceau central · +10% Gym80</div><span class="tag tag-r">repos 90s–2'</span></div><div class="exo-r"><div class="exo-sets">4×12-15</div><div class="exo-pct">67%</div></div></div>
+      <div class="exo"><div><div class="exo-name">2. Pec deck machine</div><div class="exo-note">Volume · amplitude max · faisceau interne</div><span class="tag tag-r">repos 90s</span></div><div class="exo-r"><div class="exo-sets">3×15</div><div class="exo-pct">65%</div></div></div>
+      <div class="exo"><div><div class="exo-name">3. Élévation latérale machine guidée</div><div class="exo-note">Arc douloureux contrôlé · charge légère · delta médian</div><span class="tag tag-c">repos 60s</span></div><div class="exo-r"><div class="exo-sets">4×15</div><div class="exo-pct">60%</div></div></div>
+      <div class="exo"><div><div class="exo-name">4. Triceps overhead poulie basse</div><div class="exo-note">Chef long · étirement optimal · contraction complète</div><span class="tag tag-r">repos 90s</span></div><div class="exo-r"><div class="exo-sets">3×12-15</div><div class="exo-pct">65%</div></div></div>
+      <div class="exo"><div><div class="exo-name">5. Oiseau machine</div><div class="exo-note">Arrière épaule · amplitude contrôlée · finition</div><span class="tag tag-c">repos 60s</span></div><div class="exo-r"><div class="exo-sets">3×15</div><div class="exo-pct">60%</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr" onclick="togCard(this,'cb6')">
+      <div><div class="card-title">Jour 6 — Pull B <span class="badge b-e2">E2 volume</span></div><div class="card-sub">Dos · Biceps · Arrière épaule</div></div>
+      <span class="chev">▼</span>
+    </div>
+    <div id="cb6" class="card-body">
+      <div class="exo"><div><div class="exo-name">1. Tirage vertical prise neutre</div><div class="exo-note">Grand dorsal profond · épaules basses</div><span class="tag tag-r">repos 90s–2'</span></div><div class="exo-r"><div class="exo-sets">4×10-12</div><div class="exo-pct">70%</div></div></div>
+      <div class="exo"><div><div class="exo-name">2. Rowing poulie basse neutre</div><div class="exo-note">Assis · tirage vers le ventre · rétraction 2s</div><span class="tag tag-r">repos 90s</span></div><div class="exo-r"><div class="exo-sets">4×12</div><div class="exo-pct">67%</div></div></div>
+      <div class="exo"><div><div class="exo-name">3. Curl marteau haltères alternés</div><div class="exo-note">Brachial + brachio-radial</div><span class="tag tag-r">repos 90s</span></div><div class="exo-r"><div class="exo-sets">3×12</div><div class="exo-pct">67%</div></div></div>
+      <div class="exo"><div><div class="exo-name">4. Curl concentration haltère</div><div class="exo-note">Coude appuyé cuisse · isole le pic biceps</div><span class="tag tag-r">repos 60s</span></div><div class="exo-r"><div class="exo-sets">3×12-15</div><div class="exo-pct">65%</div></div></div>
+      <div class="exo"><div><div class="exo-name">5. Face pull poulie haute</div><div class="exo-note">Prise corde · coudes hauts · rotateurs + arrière épaule</div><span class="tag tag-c">repos 60s toujours</span></div><div class="exo-r"><div class="exo-sets">3×15</div><div class="exo-pct">57%</div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr" onclick="togCard(this,'cb7')">
+      <div><div class="card-title">Jour 7 — Legs B <span class="badge b-e3">E3 métabolique</span></div><div class="card-sub">Isolation · congestion · ischios · mollets</div></div>
+      <span class="chev">▼</span>
+    </div>
+    <div id="cb7" class="card-body">
+      <div class="ib">E3 = congestion. Récup 45–60s. Unilatéral : enchaîner G+D puis repos.</div>
+      <div class="exo"><div><div class="exo-name">1. Leg extension unilatéral</div><div class="exo-note">G+D → repos · contraction 1s · descente 2s</div><span class="tag tag-r">repos 45–60s après 2c</span></div><div class="exo-r"><div class="exo-sets">4×15-20</div><div class="exo-pct">55%</div></div></div>
+      <div class="exo"><div><div class="exo-name">2. Leg curl assis machine</div><div class="exo-note">Chef court ischio prioritaire</div><span class="tag tag-r">repos 45–60s</span></div><div class="exo-r"><div class="exo-sets">4×15-20</div><div class="exo-pct">55%</div></div></div>
+      <div class="exo" style="background:rgba(123,111,212,0.05);border-left:2px solid var(--purple);"><div><div class="exo-name">3+4. Superset antagoniste <span class="badge" style="background:rgba(123,111,212,0.2);color:var(--purple);font-size:9px;">ENCHAÎNER SANS REPOS</span></div><div class="exo-note" style="color:var(--purple);">Facilitation réciproque · repos 45s après les DEUX</div></div><div class="exo-r"></div></div>
+      <div class="exo" style="padding-left:20px;"><div><div class="exo-name">3. Adducteur machine assis</div><div class="exo-note">Amplitude complète · contraction 1s · enchaîner abducteur</div></div><div class="exo-r"><div class="exo-sets">3×20</div><div class="exo-pct">50%</div></div></div>
+      <div class="exo" style="padding-left:20px;"><div><div class="exo-name">4. Abducteur machine assis</div><div class="exo-note">Fessier moyen · repos 45s après</div><span class="tag tag-r">repos 45s après abducteur</span></div><div class="exo-r"><div class="exo-sets">3×20</div><div class="exo-pct">50%</div></div></div>
+      <div class="exo hl-green"><div><div class="exo-name">5. Leg curl debout unilatéral Technogym <span class="badge b-new" style="font-size:9px;">FP</span></div><div class="exo-note gr">Chef long ischio · G+D puis repos</div><span class="tag tag-r">repos 60s après 2c</span></div><div class="exo-r"><div class="exo-sets">3×12-15</div><div class="exo-pct">60%</div></div></div>
+      <div class="exo"><div><div class="exo-name">6. Mollets assis machine</div><div class="exo-note">Soléaire · amplitude complète · descente lente</div><span class="tag tag-r">repos 45–60s</span></div><div class="exo-r"><div class="exo-sets">4×20</div><div class="exo-pct">50%</div></div></div>
+    </div>
+  </div>
+
+  <div class="sep">Jour 8 — Repos · retour Jour 1</div>
+</div>
+
+<!-- SEANCE -->
+<div id="tab-seance" class="panel">
+  <div class="sw" id="sw1">
+    <button class="sw-btn active" onclick="setSalle('cable',this)">🟢 Fitness Park</button>
+    <button class="sw-btn" onclick="setSalle('gym80',this)">🟡 John Reed Gym80</button>
+  </div>
+  <div id="si1" class="salle-note salle-fp">Fitness Park câbles — charges de référence.</div>
+  <div class="day-btns">
+    <button class="day-btn active" onclick="selSeance(0,this)">J1 Push E1</button>
+    <button class="day-btn" onclick="selSeance(1,this)">J2 Pull E1</button>
+    <button class="day-btn" onclick="selSeance(2,this)">J3 Legs E1</button>
+    <button class="day-btn" onclick="selSeance(3,this)">J5 Push E2</button>
+    <button class="day-btn" onclick="selSeance(4,this)">J6 Pull E2</button>
+    <button class="day-btn" onclick="selSeance(5,this)">J7 Legs E3</button>
+  </div>
+  <div id="seance-content"></div>
+  <div class="rpe-global">
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px;">RPE moyen de la séance</div>
+    <div id="rpe-moyenne" style="font-size:22px;font-weight:700;color:var(--text3);margin-bottom:4px;">0 / 0 exercices notés</div>
+    <div id="rpe-desc" style="font-size:12px;color:var(--text3);min-height:16px;"></div>
+    <div id="adj-desc" style="font-size:12px;min-height:16px;margin-top:3px;"></div>
+    <div style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5;">Note le RPE sur chaque exercice · moyenne et ajustements automatiques.</div>
+  </div>
+  <button class="btn" id="save-btn" onclick="saveSeance()">Enregistrer la séance</button>
+  <span class="confirm" id="save-confirm">✓ Sauvegardée</span>
+</div>
+
+<!-- 1RM -->
+<div id="tab-rm" class="panel">
+  <div class="sw" id="sw2">
+    <button class="sw-btn active" onclick="setRMSalle('cable',this)">🟢 Fitness Park</button>
+    <button class="sw-btn" onclick="setRMSalle('gym80',this)">🟡 John Reed Gym80</button>
+  </div>
+  <div id="si2" class="salle-note salle-fp">1RM mesuré sur câbles Fitness Park. Pour Gym80 : +10%.</div>
+  <div class="field"><label>Exercice</label>
+    <select id="rx">
+      <option>Presse 45°</option><option>Leg extension uni</option><option>Leg curl allongé</option><option>Leg curl assis</option><option>Leg curl debout uni</option><option>Pendulum squat</option><option>Hack squat</option><option>Hip thrust machine</option><option>Mollets debout</option><option>Mollets assis</option><option>Adducteur machine</option><option>Abducteur machine</option>
+      <option>Tirage vertical large</option><option>Tirage neutre</option><option>Rowing barre</option><option>Rowing Hammer</option><option>Rowing Technogym</option><option>Rowing T-bar</option><option>Rowing poulie basse</option>
+      <option>Développé haltères</option><option>Machine déclinée Technogym</option><option>Poussée convergente (FP) / Standing chest press (JR)</option><option>Pec deck</option><option>Pec deck volume</option>
+      <option>Élév lat poulie basse</option><option>Élév lat machine</option><option>Oiseau poulie basse</option><option>Oiseau machine</option><option>Curl EZ</option><option>Curl marteau</option><option>Curl concentration</option><option>Triceps poulie</option><option>Triceps overhead</option>
+    </select>
+    <div style="font-size:11px;color:#606060;margin-top:4px;padding:5px 8px;background:rgba(244,162,97,0.1);border-radius:6px;line-height:1.5;">⚠ Rotation externe + Face pull : charge fixe par ressenti. Pas de 1RM.</div>
+  </div>
+  <div class="g2">
+    <div class="field"><label>Reps testées</label><select id="rr"><option value="3">3RM</option><option value="5">5RM</option></select></div>
+    <div class="field"><label>Charge (kg)</label><input type="number" id="rc" placeholder="ex: 80" min="1" max="500" step="0.5"/></div>
+  </div>
+  <button class="btn" onclick="calcRM()">Calculer le 1RM</button>
+  <div id="rm-result" style="display:none;margin-top:14px;">
+    <div class="rm-zones">
+      <div class="rm-zone"><div class="rm-zone-label">1RM estimé</div><div class="rm-zone-val" id="v1rm">—</div><div class="rm-zone-sub">Brzycki</div></div>
+      <div class="rm-zone" style="border:1px solid rgba(230,57,70,0.3);"><div class="rm-zone-label">E1 · 78%</div><div class="rm-zone-val" id="ve1">—</div><div class="rm-zone-sub">6–10 reps</div></div>
+      <div class="rm-zone" style="border:1px solid rgba(244,162,97,0.3);"><div class="rm-zone-label">E2 · 68%</div><div class="rm-zone-val" id="ve2">—</div><div class="rm-zone-sub">10–15 reps</div></div>
+    </div>
+    <div class="rm-zones">
+      <div class="rm-zone" style="border:1px solid rgba(82,183,136,0.3);"><div class="rm-zone-label">E3 · 57%</div><div class="rm-zone-val" id="ve3">—</div><div class="rm-zone-sub">15–25 reps</div></div>
+      <div class="rm-zone" style="border:1px solid rgba(244,162,97,0.3);"><div class="rm-zone-label">Gym80 E1</div><div class="rm-zone-val" id="vg1">—</div><div class="rm-zone-sub">+10% courroies</div></div>
+      <div class="rm-zone" style="border:1px solid rgba(244,162,97,0.3);"><div class="rm-zone-label">Gym80 E2</div><div class="rm-zone-val" id="vg2">—</div><div class="rm-zone-sub">+10% courroies</div></div>
+    </div>
+    <button class="btn" onclick="saveRM()" style="margin-top:0;">Enregistrer ce 1RM</button>
+    <span class="confirm" id="rm-confirm">✓ Enregistré</span>
+  </div>
+  <div style="font-size:13px;font-weight:600;margin:16px 0 8px;">1RM enregistrés</div>
+  <div id="rm-histo" style="font-size:13px;color:var(--text3);">Chargement...</div>
+</div>
+
+<!-- HISTORIQUE -->
+<div id="tab-histo" class="panel">
+  <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Historique des séances</div>
+  <div class="hist-filter" id="histo-filters">
+    <button class="hist-filter-btn active" onclick="filterHisto('all',this)">Toutes</button>
+    <button class="hist-filter-btn" onclick="filterHisto('J1 Push A E1',this)">Push A</button>
+    <button class="hist-filter-btn" onclick="filterHisto('J2 Pull A E1',this)">Pull A</button>
+    <button class="hist-filter-btn" onclick="filterHisto('J3 Legs A E1',this)">Legs A</button>
+    <button class="hist-filter-btn" onclick="filterHisto('J5 Push B E2',this)">Push B</button>
+    <button class="hist-filter-btn" onclick="filterHisto('J6 Pull B E2',this)">Pull B</button>
+    <button class="hist-filter-btn" onclick="filterHisto('J7 Legs B E3',this)">Legs B</button>
+  </div>
+  <div id="histo-content"><div style="color:var(--text3);font-size:13px;">Chargement...</div></div>
+</div>
+
+<!-- GAINAGE -->
+<div id="tab-gainage" class="panel">
+  <div class="ib" style="margin:0 0 8px;">10 min en fin de séance J1, J3, J5. 6 semaines. Pas de crunchs — grand droit déjà dominant.</div>
+  <div class="wb" style="margin:0 0 12px;">Diagnostic photos : transverse capable mais non automatisé + antéversion du bassin. Priorité = recrutement réflexe. Vacuum intégré dès S1.</div>
+  <div class="g-phase">
+    <div class="g-hdr" onclick="togG('gg1')"><div class="g-title">Sem 1–2 · Connexion transverse + bascule pelvienne <span class="badge b-new" style="font-size:9px;">Niv 1</span></div><span class="chev">▼</span></div>
+    <div id="gg1" class="g-body">
+      <div class="g-exo"><span>Vacuum debout<br><span style="font-size:11px;color:var(--text3);">Expiration forcée + rentrée nombril · maintien 10s · priorité absolue</span></span><span style="color:var(--text3);font-size:12px;">3×10s×5</span></div>
+      <div class="g-exo"><span>Respiration diaphragmatique<br><span style="font-size:11px;color:var(--text3);">Allongé · inspiration abdomen · expiration + rentrée nombril 5s</span></span><span style="color:var(--text3);font-size:12px;">3×10</span></div>
+      <div class="g-exo"><span>Bascule pelvienne allongée<br><span style="font-size:11px;color:var(--text3);">Genoux fléchis · écraser lombaires · maintien 3s · corrige l'antéversion</span></span><span style="color:var(--text3);font-size:12px;">3×15</span></div>
+      <div class="g-exo"><span>Dead bug lent<br><span style="font-size:11px;color:var(--text3);">Lombaires collées · bras+jambe opposés · vacuum avant chaque rep</span></span><span style="color:var(--text3);font-size:12px;">3×8/c</span></div>
+    </div>
+  </div>
+  <div class="g-phase">
+    <div class="g-hdr" onclick="togG('gg2')"><div class="g-title">Sem 3–4 · Stabilisation dynamique <span class="badge b-e2" style="font-size:9px;">Niv 2</span></div><span class="chev">▼</span></div>
+    <div id="gg2" class="g-body">
+      <div class="g-exo"><span>Vacuum en marche<br><span style="font-size:11px;color:var(--text3);">Farmers walk léger · transverse actif en déplacement</span></span><span style="color:var(--text3);font-size:12px;">3×20m</span></div>
+      <div class="g-exo"><span>Planche sur coudes<br><span style="font-size:11px;color:var(--text3);">Vacuum avant de monter · bascule pelvienne · pas de cambre</span></span><span style="color:var(--text3);font-size:12px;">3×30s</span></div>
+      <div class="g-exo"><span>Bird dog lesté léger<br><span style="font-size:11px;color:var(--text3);">2s pause en extension · lombaires stables</span></span><span style="color:var(--text3);font-size:12px;">3×10/c</span></div>
+      <div class="g-exo"><span>Pallof press poulie<br><span style="font-size:11px;color:var(--text3);">Anti-rotation · bras tendus 2s · transverse actif</span></span><span style="color:var(--text3);font-size:12px;">3×10/c</span></div>
+    </div>
+  </div>
+  <div class="g-phase">
+    <div class="g-hdr" onclick="togG('gg3')"><div class="g-title">Sem 5–6 · Transfert automatique en séance <span class="badge b-e1" style="font-size:9px;">Niv 3</span></div><span class="chev">▼</span></div>
+    <div id="gg3" class="g-body">
+      <div class="gb" style="margin:0 0 8px;">Objectif S5-S6 : vacuum automatique avant chaque série lourde. Gainage réflexe.</div>
+      <div class="g-exo"><span>Vacuum pré-série<br><span style="font-size:11px;color:var(--text3);">Avant chaque série E1 · priorité exercices debout et assis</span></span><span style="color:var(--text3);font-size:12px;">Systématique</span></div>
+      <div class="g-exo"><span>Planche dynamique tap épaules<br><span style="font-size:11px;color:var(--text3);">Sans rotation de bassin · vacuum actif</span></span><span style="color:var(--text3);font-size:12px;">3×10/c</span></div>
+      <div class="g-exo"><span>Farmers walk charge lourde<br><span style="font-size:11px;color:var(--text3);">Gainage réflexe en marche chargée</span></span><span style="color:var(--text3);font-size:12px;">3×20m</span></div>
+      <div class="g-exo"><span>Hollow body dynamique<br><span style="font-size:11px;color:var(--text3);">Balancement lent · lombaires au sol strictement</span></span><span style="color:var(--text3);font-size:12px;">3×10</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div id="tab-chat" class="panel">
+  <div class="chat-wrap">
+    <div class="chat-msgs" id="chat-msgs">
+      <div class="msg msg-c">Programme SPO v4.0 chargé — sync Supabase actif, historique des séances disponible. Pose tes questions Franck.</div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="ci" placeholder="Pose ta question..." onkeydown="if(event.key==='Enter')send()"/>
+      <button onclick="send()">↑</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ─── CONFIG SUPABASE ───────────────────────────────────────────────────────────
+const SB_URL = 'https://czhiceeqbruvftrqfqtd.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aGljZWVxYnJ1dmZ0cnFmcXRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMzg1MDksImV4cCI6MjA5NzcxNDUwOX0.U1dYy98KhMMHcBLz3RE2lLPm3qllpJYi-qUk6w6j55c';
+
+// Helper REST Supabase
+async function sbFetch(endpoint, opts = {}) {
+  const url = `${SB_URL}/rest/v1/${endpoint}`;
+  const headers = {
+    'apikey': SB_KEY,
+    'Authorization': `Bearer ${SB_KEY}`,
+    'Content-Type': 'application/json',
+    'Prefer': opts.prefer || 'return=representation',
+    ...opts.headers
+  };
+  const res = await fetch(url, { method: opts.method || 'GET', headers, body: opts.body });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Supabase ${res.status}: ${err}`);
+  }
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+// ─── ÉTAT ─────────────────────────────────────────────────────────────────────
+let rmData = {}, curDay = 0, pendRM = null, chatH = [], sal = 'cable', rmSal = 'cable';
+let exoRPE = {};
+let seancesHistory = [];
+let sbOnline = false;
+let histoFilter = 'all';
+
+// ─── SYNC STATUS ──────────────────────────────────────────────────────────────
+function setSyncStatus(status, msg = '') {
+  const dot = document.getElementById('sync-dot');
+  const banner = document.getElementById('sync-banner');
+  dot.className = `sync-dot ${status}`;
+  if (msg) {
+    banner.className = `sync-banner show ${status}`;
+    banner.textContent = msg;
+    if (status === 'ok') setTimeout(() => banner.classList.remove('show'), 3000);
+  }
+}
+
+// ─── INIT : charger 1RM + historique depuis Supabase ──────────────────────────
+async function initSupabase() {
+  setSyncStatus('loading', 'Connexion Supabase...');
+  try {
+    // Charger 1RM
+    const rms = await sbFetch('rm_data?user_id=eq.franck&select=exercice,rm,pct,salle,date');
+    if (rms) {
+      rms.forEach(r => { rmData[r.exercice] = { rm: r.rm, pct: r.pct, sal: r.salle, date: r.date }; });
+    }
+    // Charger historique séances
+    const hist = await sbFetch('seances?user_id=eq.franck&select=*&order=created_at.desc&limit=100');
+    if (hist) seancesHistory = hist;
+
+    sbOnline = true;
+    setSyncStatus('ok', '✓ Sync Supabase');
+    renderRMHisto();
+    renderHistorique();
+  } catch (e) {
+    console.warn('Supabase indisponible, mode local:', e.message);
+    sbOnline = false;
+    setSyncStatus('err', '⚠ Mode local — données non sauvegardées en cloud');
+    // Fallback localStorage
+    loadFromLocal();
+    renderRMHisto();
+    renderHistorique();
+  }
+}
+
+// ─── FALLBACK LOCAL ────────────────────────────────────────────────────────────
+function loadFromLocal() {
+  try {
+    const saved = localStorage.getItem('spo_rm_franck');
+    if (saved) rmData = JSON.parse(saved);
+    const hist = localStorage.getItem('spo_seances_franck');
+    if (hist) seancesHistory = JSON.parse(hist);
+  } catch(e) {}
+}
+
+function saveToLocal() {
+  try {
+    localStorage.setItem('spo_rm_franck', JSON.stringify(rmData));
+    localStorage.setItem('spo_seances_franck', JSON.stringify(seancesHistory));
+  } catch(e) {}
+}
+
+// ─── DONNÉES PROGRAMME ────────────────────────────────────────────────────────
+const SEANCES = [
+  {n:'J1 Push A E1',e:[
+    {n:'Développé haltères',s:3,r:'6-8',rp:"2'30–3'",p:78},
+    {n:'Machine déclinée Technogym',s:3,r:'8-10',rp:"2'30",p:75,fp:true},
+    {n:'Pec deck',s:3,r:'10-12',rp:"90s",p:70,g80p:true},
+    {n:'Élév lat poulie basse',s:3,r:'10-12',rp:"60s",p:70,g80p:true},
+    {n:'Triceps poulie',s:3,r:'8-10',rp:"2'",p:75,g80p:true},
+    {n:'Oiseau poulie basse',s:3,r:'12',rp:"60s",p:67,g80p:true}
+  ]},
+  {n:'J2 Pull A E1',e:[
+    {n:'Tirage vertical large',s:3,r:'6-8',rp:"2'30–3'",p:78,g80p:true},
+    {n:'Rowing barre',s:3,r:'6-8',rp:"2'30–3'",p:78,g80p:true},
+    {n:'Rowing Hammer',s:3,r:'8-10',rp:"2'",p:75},
+    {n:'Rowing Technogym',s:3,r:'8-10',rp:"2'",p:75},
+    {n:'Rowing T-bar',s:3,r:'10-12',rp:"90s",p:68,t:true},
+    {n:'Curl EZ',s:3,r:'8-10',rp:"2'",p:75,g80p:true},
+    {n:'Rotation externe',s:3,r:'15',rp:"60s",p:55,g80p:true}
+  ]},
+  {n:'J3 Legs A E1',e:[
+    {n:'Presse 45°',s:3,r:'8-10',rp:"2'30–3'",p:75},
+    {n:'Leg curl allongé',s:3,r:'8-10',rp:"2'30",p:75,g80p:true},
+    {n:'Pendulum squat / Hack squat',nFP:'Pendulum squat',nJR:'Hack squat',s:3,r:'8-10',rp:"2'30",p:75,dual:true},
+    {n:'Hip thrust machine',s:3,r:'10',rp:"2'",p:72},
+    {n:'Mollets debout',s:4,r:'12',rp:"60s",p:67,g80p:true}
+  ]},
+  {n:'J5 Push B E2',e:[
+    {n:'Poussée convergente (FP) / Standing chest press (JR)',s:4,r:'12-15',rp:"90s–2'",p:67,fp:true},
+    {n:'Pec deck volume',s:3,r:'15',rp:"90s",p:65,g80p:true},
+    {n:'Élév lat machine',s:4,r:'15',rp:"60s",p:60,g80p:true},
+    {n:'Triceps overhead',s:3,r:'12-15',rp:"90s",p:65,g80p:true},
+    {n:'Oiseau machine',s:3,r:'15',rp:"60s",p:60,g80p:true}
+  ]},
+  {n:'J6 Pull B E2',e:[
+    {n:'Tirage neutre',s:4,r:'10-12',rp:"90s–2'",p:70,g80p:true},
+    {n:'Rowing poulie basse',s:4,r:'12',rp:"90s",p:67,g80p:true},
+    {n:'Curl marteau',s:3,r:'12',rp:"90s",p:67,g80p:true},
+    {n:'Curl concentration',s:3,r:'12-15',rp:"60s",p:65,g80p:true},
+    {n:'Face pull',s:3,r:'15',rp:"60s",p:57,g80p:true}
+  ]},
+  {n:'J7 Legs B E3',e:[
+    {n:'Leg extension uni',s:4,r:'15-20',rp:"45–60s",p:55,g80p:true},
+    {n:'Leg curl assis',s:4,r:'15-20',rp:"45–60s",p:55,g80p:true},
+    {n:'Adducteur machine',s:3,r:'20',rp:"— enchaîner abducteur",p:50,g80p:true,superset:'start'},
+    {n:'Abducteur machine',s:3,r:'20',rp:"45s après",p:50,g80p:true,superset:'end'},
+    {n:'Leg curl debout uni',s:3,r:'12-15',rp:"60s",p:60,fp:true},
+    {n:'Mollets assis',s:4,r:'20',rp:"45–60s",p:50,g80p:true}
+  ]}
+];
+
+const RT = {6:'Très facile — 4+ reps en réserve.',7:'Confortable — 3 reps.',8:'Zone optimale — 2 reps.',9:'Très dur — 1 rep restante.',10:'Maximal — 0 rep restante.'};
+const RA = {6:5,7:2.5,8:0,9:-2.5,10:-5};
+const RC = {6:'#52B788',7:'#52B788',8:'#7B6FD4',9:'#F4A261',10:'#E63946'};
+const RBG = {6:'rgba(82,183,136,0.2)',7:'rgba(82,183,136,0.2)',8:'rgba(123,111,212,0.2)',9:'rgba(244,162,97,0.2)',10:'rgba(230,57,70,0.2)'};
+
+// ─── UI HELPERS ───────────────────────────────────────────────────────────────
+function showTab(n) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + n).classList.add('active');
+  if (n === 'histo') renderHistorique();
+}
+function togCard(hdr, id) { document.getElementById(id).classList.toggle('open'); hdr.classList.toggle('open'); }
+function togG(id) { document.getElementById(id).classList.toggle('open'); }
+
+function setSalle(type, btn) {
+  sal = type;
+  document.querySelectorAll('#sw1 .sw-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const el = document.getElementById('si1');
+  if (type === 'gym80') {
+    el.className = 'salle-note salle-jr';
+    el.textContent = 'John Reed Gym80 courroies — +10% sur les charges affichées. Standing chest press + hack squat disponibles.';
+  } else {
+    el.className = 'salle-note salle-fp';
+    el.textContent = 'Fitness Park câbles — charges de référence. Déclinée Technogym + poussée convergente + pendulum disponibles.';
+  }
+  renderSeance();
+}
+
+function setRMSalle(type, btn) {
+  rmSal = type;
+  document.querySelectorAll('#sw2 .sw-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const el = document.getElementById('si2');
+  if (type === 'gym80') {
+    el.className = 'salle-note salle-jr';
+    el.textContent = 'Sur Gym80 courroies. Pour FP câbles : retirer 10%.';
+  } else {
+    el.className = 'salle-note salle-fp';
+    el.textContent = '1RM sur câbles Fitness Park. Pour Gym80 : +10%.';
+  }
+}
+
+// ─── RÉCUPÉRER DERNIÈRES CHARGES D'UN EXERCICE ────────────────────────────────
+function getLastSets(exoName, nbSeries) {
+  // Cherche dans l'historique la dernière séance qui contient cet exercice
+  const seanceName = SEANCES[curDay].n;
+  const matching = seancesHistory.filter(s => s.seance_nom === seanceName);
+  if (!matching.length) return null;
+  const last = matching[0]; // déjà trié desc
+  if (!last.exercices) return null;
+  const found = last.exercices.find(e => e.nom === exoName);
+  if (!found || !found.series) return null;
+  return found.series; // [{kg, reps}]
+}
+
+// ─── RENDU SÉANCE ─────────────────────────────────────────────────────────────
+function selSeance(idx, btn) {
+  curDay = idx; exoRPE = {};
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('rpe-desc').textContent = '';
+  document.getElementById('adj-desc').textContent = '';
+  renderSeance();
+}
+
+function renderSeance() {
+  exoRPE = {};
+  const d = SEANCES[curDay];
+  const gl = sal === 'gym80' ? '<span style="font-size:10px;background:rgba(244,162,97,0.2);color:#F4A261;padding:1px 6px;border-radius:8px;margin-left:5px;">Gym80 actif</span>' : '';
+  let h = `<div style="font-size:13px;font-weight:700;margin-bottom:10px;">${d.n}${gl}</div>`;
+
+  d.e.forEach((ex, ei) => {
+    const dispName = ex.dual ? (sal === 'gym80' ? ex.nJR : ex.nFP) : ex.n;
+    const rmKey = ex.dual ? (sal === 'gym80' ? ex.nJR : ex.nFP) : ex.n;
+    const rm = rmData[rmKey];
+    const applyCorr = sal === 'gym80' && ex.g80p;
+    const f = applyCorr ? 1.1 : 1.0;
+    let ci = '<span style="color:var(--text3);font-size:11px;">→ Renseigner dans onglet 1RM</span>';
+    if (rm && ex.p > 0) {
+      const base = Math.round(rm.rm * ex.p / 100);
+      const adj = Math.round(base * f);
+      ci = applyCorr ?
+        `<span style="color:#F4A261;font-weight:600;">${adj} kg (Gym80 +10%)</span>` :
+        `<span style="color:#7B6FD4;font-weight:600;">${base} kg</span>`;
+    }
+    const fpTag = ex.fp ? `<span style="font-size:10px;background:rgba(82,183,136,0.15);color:#52B788;padding:1px 5px;border-radius:6px;margin-left:4px;">${sal === 'gym80' ? 'JR' : 'FP'}</span>` : '';
+    const tTag = ex.t ? '<span style="font-size:10px;background:rgba(72,202,228,0.15);color:#48CAE4;padding:1px 5px;border-radius:6px;margin-left:4px;">T-bar E2</span>' : '';
+    const dualTag = ex.dual ? `<span style="font-size:10px;background:rgba(72,202,228,0.15);color:#48CAE4;padding:1px 5px;border-radius:6px;margin-left:4px;">${sal === 'gym80' ? 'JR' : 'FP'} · 1RM propre</span>` : '';
+    const supersetStyle = ex.superset === 'start' ? 'border-top:1px solid var(--purple);border-left:2px solid var(--purple);border-radius:8px 8px 0 0;margin-bottom:0;' :
+                          ex.superset === 'end' ? 'border-bottom:1px solid var(--purple);border-left:2px solid var(--purple);border-radius:0 0 8px 8px;margin-top:0;border-top:0.5px dashed var(--border);' : '';
+    const superTag = ex.superset ? `<span style="font-size:10px;background:rgba(123,111,212,0.2);color:var(--purple);padding:1px 6px;border-radius:8px;margin-left:4px;">${ex.superset === 'start' ? 'SUPERSET ▼' : '▲ SUPERSET'}</span>` : '';
+    const rpeGroupNote = ex.superset === 'end' ? '<div style="font-size:10px;color:var(--purple);margin-bottom:4px;">RPE partagé avec l\'adducteur ↑</div>' : '';
+    const bc = ex.t ? 's-exo tbar' : ex.fp ? 's-exo fp' : 's-exo';
+
+    // Récupérer dernières charges
+    const lastSets = getLastSets(ex.n, ex.s);
+
+    h += `<div class="${bc}" id="exo-${ei}" style="${supersetStyle}">
+      <div class="s-exo-hdr"><div class="s-exo-name">${dispName}${fpTag}${tTag}${dualTag}${superTag}</div><div class="s-repos">repos ${ex.rp}</div></div>
+      <div class="s-info">${ex.s}×${ex.r} · ${ci}</div>`;
+
+    if (lastSets) {
+      h += `<div style="font-size:10px;color:var(--purple);margin-bottom:5px;">📋 Dernière fois : ${lastSets.slice(0,ex.s).map(s=>`${s.kg}kg×${s.reps}`).join(' · ')}</div>`;
+    }
+
+    h += `<div class="sets-grid">`;
+    for (let i = 1; i <= ex.s; i++) {
+      const prev = lastSets && lastSets[i-1];
+      const prevKg = prev ? prev.kg : '';
+      const prevReps = prev ? prev.reps : '';
+      const hintClass = prev ? ' has-prev' : '';
+      const hint = prev ? `<div class="prev-hint">↑ ${prev.kg}kg</div>` : '';
+      h += `<div class="set-cell">
+        <div class="set-lbl">S${i}</div>
+        <input class="set-inp${hintClass}" type="number" placeholder="${prev?prev.kg:'kg'}" step="0.5" min="0" id="inp-kg-${ei}-${i}"/>
+        ${hint}
+        <input class="set-inp${hintClass}" type="number" placeholder="${prev?prev.reps:'r'}" min="0" max="40" id="inp-reps-${ei}-${i}"/>
+      </div>`;
+    }
+    h += `</div>`;
+
+    if (!ex.superset || ex.superset === 'start') {
+      const rpeLabel = ex.superset === 'start' ? 'RPE du superset' : 'RPE de cet exercice';
+      let rpeBtns = '';
+      for (let r = 6; r <= 10; r++) {
+        rpeBtns += `<button onclick="setExoRPE(${ei},${r},this)" style="flex:1;height:28px;border-radius:6px;border:0.5px solid var(--border);background:var(--bg3);color:var(--text3);font-size:11px;font-weight:600;cursor:pointer;" data-ei="${ei}">${r}</button>`;
+      }
+      h += `<div style="margin-top:7px;">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em;">${rpeLabel}</div>
+        <div style="display:flex;gap:4px;" id="rpe-exo-${ei}">${rpeBtns}</div>
+        <div id="rpe-exo-msg-${ei}" style="font-size:11px;color:var(--text3);min-height:14px;margin-top:3px;"></div>
+      </div>
+      </div>`;
+    } else {
+      h += `${rpeGroupNote}</div>`;
+    }
+  });
+
+  document.getElementById('seance-content').innerHTML = h;
+  updateMoyenne();
+}
+
+function setExoRPE(ei, r, btn) {
+  exoRPE[ei] = r;
+  const d = SEANCES[curDay];
+  if (d.e[ei] && d.e[ei].superset === 'start' && d.e[ei+1] && d.e[ei+1].superset === 'end') {
+    exoRPE[ei+1] = r;
+  }
+  const container = document.getElementById(`rpe-exo-${ei}`);
+  if (container) {
+    container.querySelectorAll('button').forEach(b => {
+      b.style.background = 'var(--bg3)'; b.style.color = 'var(--text3)'; b.style.border = '0.5px solid var(--border)';
+    });
+    btn.style.background = RBG[r]; btn.style.color = RC[r]; btn.style.border = 'none';
+  }
+  const msgs = {6:'Très facile — +5% prochaine fois',7:'Confortable — +2.5%',8:'Idéal — maintenir',9:'Très dur — −2.5%',10:'Maximal — −5%'};
+  const msgEl = document.getElementById(`rpe-exo-msg-${ei}`);
+  if (msgEl) { msgEl.textContent = msgs[r]; msgEl.style.color = RC[r]; }
+  updateMoyenne();
+}
+
+function updateMoyenne() {
+  const vals = Object.values(exoRPE);
+  const nb = SEANCES[curDay].e.length;
+  const moyEl = document.getElementById('rpe-moyenne');
+  const adjEl = document.getElementById('adj-desc');
+  const descEl = document.getElementById('rpe-desc');
+  if (!vals.length) {
+    moyEl.textContent = `0 / ${nb} exercices notés`;
+    moyEl.style.color = 'var(--text3)';
+    descEl.textContent = ''; adjEl.textContent = '';
+    return;
+  }
+  const moy = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const moyR = Math.round(moy * 10) / 10;
+  const curRPE = Math.round(moy);
+  moyEl.textContent = `${vals.length}/${nb} notés · Moyenne : ${moyR}`;
+  moyEl.style.color = RC[curRPE] || 'var(--text3)';
+  descEl.textContent = RT[curRPE] || '';
+  const a = RA[curRPE] || 0;
+  const m = a > 0 ? `→ Ajustement global : +${a}%` : a < 0 ? `→ Ajustement global : ${a}% — récupération` : '→ Maintien général — RPE moyen idéal';
+  adjEl.textContent = m; adjEl.style.color = RC[curRPE];
+}
+
+// ─── SAUVEGARDER SÉANCE ───────────────────────────────────────────────────────
+async function saveSeance() {
+  const vals = Object.values(exoRPE);
+  if (!vals.length) { alert('Note le RPE d\'au moins un exercice.'); return; }
+
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true; btn.textContent = 'Enregistrement...';
+
+  // Collecter les données saisies
+  const d = SEANCES[curDay];
+  const exercices = d.e.map((ex, ei) => {
+    const series = [];
+    for (let i = 1; i <= ex.s; i++) {
+      const kgEl = document.getElementById(`inp-kg-${ei}-${i}`);
+      const repsEl = document.getElementById(`inp-reps-${ei}-${i}`);
+      const kg = kgEl ? parseFloat(kgEl.value) || null : null;
+      const reps = repsEl ? parseInt(repsEl.value) || null : null;
+      series.push({ kg, reps });
+    }
+    return { nom: ex.n, series, rpe: exoRPE[ei] || null };
+  });
+
+  const now = new Date();
+  const seanceData = {
+    user_id: 'franck',
+    seance_nom: d.n,
+    salle: sal,
+    exercices: exercices,
+    rpe_moyen: vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*10)/10 : null,
+    created_at: now.toISOString(),
+    date_fr: now.toLocaleDateString('fr-FR')
+  };
+
+  // Mise à jour des %1RM selon RPE
+  d.e.forEach((ex, ei) => {
+    const key = ex.dual ? (sal === 'gym80' ? ex.nJR : ex.nFP) : ex.n;
+    const r = exoRPE[ei];
+    if (r === undefined || !rmData[key]) return;
+    const a = RA[r];
+    rmData[key].pct = Math.min(90, Math.max(50, Math.round((rmData[key].pct + a) * 10) / 10));
+    rmData[key].lastRPE = r;
+  });
+
+  // Ajouter en tête d'historique local
+  seancesHistory.unshift(seanceData);
+
+  // Sauvegarder
+  let savedCloud = false;
+  if (sbOnline) {
+    try {
+      await sbFetch('seances', {
+        method: 'POST',
+        body: JSON.stringify(seanceData),
+        prefer: 'return=minimal'
+      });
+      savedCloud = true;
+      setSyncStatus('ok', '✓ Séance sauvegardée dans le cloud');
+    } catch(e) {
+      console.warn('Erreur save séance Supabase:', e);
+      setSyncStatus('err', '⚠ Cloud indisponible — sauvegardé localement');
+    }
+  }
+
+  saveToLocal();
+
+  btn.disabled = false; btn.textContent = 'Enregistrer la séance';
+  const c = document.getElementById('save-confirm');
+  c.style.display = 'inline';
+  c.textContent = savedCloud ? '✓ Sauvegardée (cloud)' : '✓ Sauvegardée (local)';
+  setTimeout(() => c.style.display = 'none', 2500);
+  renderSeance();
+  renderHistorique();
+}
+
+// ─── 1RM ─────────────────────────────────────────────────────────────────────
+function calcRM() {
+  const exo = document.getElementById('rx').value;
+  const reps = parseInt(document.getElementById('rr').value);
+  const charge = parseFloat(document.getElementById('rc').value);
+  if (!charge || isNaN(charge)) return;
+  const rmBase = Math.round(charge / (1.0278 - 0.0278 * reps));
+  const rm = rmSal === 'gym80' ? Math.round(rmBase * 1.1) : rmBase;
+  document.getElementById('v1rm').textContent = rm + ' kg';
+  document.getElementById('ve1').textContent = Math.round(rm * .78) + ' kg';
+  document.getElementById('ve2').textContent = Math.round(rm * .68) + ' kg';
+  document.getElementById('ve3').textContent = Math.round(rm * .57) + ' kg';
+  document.getElementById('vg1').textContent = Math.round(rm * .78 * 1.1) + ' kg';
+  document.getElementById('vg2').textContent = Math.round(rm * .68 * 1.1) + ' kg';
+  document.getElementById('rm-result').style.display = 'block';
+  pendRM = { exo, rm, pct: 78, sal: rmSal };
+}
+
+async function saveRM() {
+  if (!pendRM) return;
+  const date = new Date().toLocaleDateString('fr-FR');
+  rmData[pendRM.exo] = { rm: pendRM.rm, pct: 78, sal: pendRM.sal, date };
+
+  let savedCloud = false;
+  if (sbOnline) {
+    try {
+      // Upsert = insert ou update si exercice existe déjà
+      await sbFetch('rm_data', {
+        method: 'POST',
+        headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify({
+          user_id: 'franck',
+          exercice: pendRM.exo,
+          rm: pendRM.rm,
+          pct: 78,
+          salle: pendRM.sal,
+          date
+        })
+      });
+      savedCloud = true;
+      setSyncStatus('ok', '✓ 1RM sauvegardé dans le cloud');
+    } catch(e) {
+      console.warn('Erreur save 1RM Supabase:', e);
+      setSyncStatus('err', '⚠ Cloud indisponible — 1RM sauvegardé localement');
+    }
+  }
+
+  saveToLocal();
+
+  const c = document.getElementById('rm-confirm');
+  c.style.display = 'inline';
+  c.textContent = savedCloud ? '✓ Enregistré (cloud)' : '✓ Enregistré (local)';
+  setTimeout(() => c.style.display = 'none', 2000);
+  renderRMHisto();
+  pendRM = null;
+}
+
+function renderRMHisto() {
+  const el = document.getElementById('rm-histo');
+  const keys = Object.keys(rmData);
+  if (!keys.length) { el.innerHTML = '<span style="color:var(--text3);font-size:13px;">Aucun 1RM enregistré.</span>'; return; }
+  let h = '<div style="overflow-x:auto;"><table class="rm-table"><thead><tr><th>Exercice</th><th>1RM</th><th>E1</th><th>E2</th><th>E3</th><th>G80 E1</th><th>Date</th></tr></thead><tbody>';
+  keys.forEach(k => {
+    const d = rmData[k];
+    h += `<tr><td style="font-weight:600;max-width:90px;word-break:break-word;font-size:11px;">${k}</td><td>${d.rm}</td><td>${Math.round(d.rm*.78)}</td><td>${Math.round(d.rm*.68)}</td><td>${Math.round(d.rm*.57)}</td><td style="color:var(--amber);">${Math.round(d.rm*.78*.9)}</td><td style="font-size:10px;color:var(--text3);">${d.date||'—'}</td></tr>`;
+  });
+  h += '</tbody></table></div>';
+  el.innerHTML = h;
+}
+
+// ─── HISTORIQUE ───────────────────────────────────────────────────────────────
+function filterHisto(filter, btn) {
+  histoFilter = filter;
+  document.querySelectorAll('.hist-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHistorique();
+}
+
+function renderHistorique() {
+  const el = document.getElementById('histo-content');
+  if (!el) return;
+
+  const filtered = histoFilter === 'all' ? seancesHistory : seancesHistory.filter(s => s.seance_nom === histoFilter);
+
+  if (!filtered.length) {
+    el.innerHTML = '<div style="color:var(--text3);font-size:13px;">Aucune séance enregistrée.</div>';
+    return;
+  }
+
+  const RC_local = {6:'#52B788',7:'#52B788',8:'#7B6FD4',9:'#F4A261',10:'#E63946'};
+
+  let h = '';
+  filtered.slice(0, 30).forEach(s => {
+    const salleTag = s.salle === 'gym80'
+      ? '<span style="font-size:10px;background:rgba(244,162,97,0.15);color:#F4A261;padding:1px 5px;border-radius:6px;margin-left:4px;">JR</span>'
+      : '<span style="font-size:10px;background:rgba(82,183,136,0.15);color:#52B788;padding:1px 5px;border-radius:6px;margin-left:4px;">FP</span>';
+    const rpeColor = s.rpe_moyen ? (RC_local[Math.round(s.rpe_moyen)] || 'var(--text3)') : 'var(--text3)';
+    const rpeTag = s.rpe_moyen ? `<span class="histo-rpe" style="background:${rpeColor}22;color:${rpeColor};">RPE ${s.rpe_moyen}</span>` : '';
+
+    h += `<div class="histo-card">
+      <div class="histo-date">${s.date_fr || s.created_at?.slice(0,10) || '—'}${salleTag}${rpeTag}</div>
+      <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px;">${s.seance_nom}</div>`;
+
+    if (s.exercices && s.exercices.length) {
+      s.exercices.forEach(ex => {
+        const seriesWithData = (ex.series || []).filter(s => s.kg || s.reps);
+        if (!seriesWithData.length) return;
+        const seriesStr = seriesWithData.map(s => {
+          if (s.kg && s.reps) return `${s.kg}kg×${s.reps}`;
+          if (s.kg) return `${s.kg}kg`;
+          if (s.reps) return `${s.reps}r`;
+          return '—';
+        }).join(' · ');
+        const rpeExo = ex.rpe ? ` <span style="font-size:10px;color:${RC_local[ex.rpe]||'var(--text3)'};">RPE${ex.rpe}</span>` : '';
+        h += `<div class="histo-exo"><span style="font-weight:500;">${ex.nom}${rpeExo}</span><br><span class="histo-series">${seriesStr}</span></div>`;
+      });
+    }
+
+    h += `</div>`;
+  });
+
+  el.innerHTML = h;
+}
+
+// ─── COACH IA ─────────────────────────────────────────────────────────────────
+const SYS = `Tu es un coach Personal Training expert. Programme SPO v4 pour Franck.
+Profil : 56 ans · 177cm · 79kg · 15-17% MG · muscle sec + légère recompo · 3 ans ancienneté (intermédiaire)
+Salles : Fitness Park Décines câbles (FP, référence) + John Reed Lyon Gym80 courroies (JR, +10% charge affichée)
+Morpho : membres courts · tronc long · cage étroite · petites clavicules · points forts bras/dos · points faibles pecs/épaules/ischios · grand droit développé · transverse déficient
+Épaules : tendinites calcifiantes bilatérales + bursite gauche. Supprimés : militaire, élévations frontales, incliné 30°. Codman + rotation externe avant Push.
+SPO : E1=6-10r 78% repos 2'30-3' · E2=10-15r 68% repos 90s-2' · E3=15-25r 57% repos 45-60s · Coiffe=60s toujours
+Réponds en français, direct, 150 mots max, actionnable.`;
+
+async function send() {
+  const inp = document.getElementById('ci');
+  const txt = inp.value.trim(); if (!txt) return;
+  inp.value = '';
+  const msgs = document.getElementById('chat-msgs');
+  const u = document.createElement('div'); u.className = 'msg msg-u'; u.textContent = txt; msgs.appendChild(u);
+  const l = document.createElement('div'); l.className = 'msg msg-c msg-l'; l.textContent = 'Coach en train de répondre...'; msgs.appendChild(l);
+  msgs.scrollTop = msgs.scrollHeight;
+  chatH.push({ role: 'user', content: txt });
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1000, system: SYS, messages: chatH })
+    });
+    const data = await res.json();
+    const rep = data.content && data.content[0] ? data.content[0].text : 'Erreur.';
+    chatH.push({ role: 'assistant', content: rep });
+    l.className = 'msg msg-c'; l.textContent = rep;
+  } catch(e) {
+    l.className = 'msg msg-c'; l.textContent = 'Erreur de connexion.';
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ─── DÉMARRAGE ────────────────────────────────────────────────────────────────
+selSeance(0, document.querySelector('.day-btn'));
+initSupabase();
+</script>
+</body>
+</html>
