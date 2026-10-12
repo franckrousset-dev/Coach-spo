@@ -170,6 +170,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   <button class="tab" onclick="showTab('rm')">1RM</button>
   <button class="tab" onclick="showTab('histo')">Historique</button>
   <button class="tab" onclick="showTab('gainage')">Gainage</button>
+  <button class="tab" onclick="showTab('materiel')">Matériel</button>
   <button class="tab" onclick="showTab('chat')">Coach IA</button>
 </div>
 
@@ -222,7 +223,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
     </div>
     <div id="cb3" class="card-body">
       <div class="exo"><div><div class="exo-name">1. Presse 45°</div><div class="exo-note">Pieds bas E1 quad max · Gym80 +10%</div><span class="tag tag-r">repos 2'30–3'</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
-      <div class="exo"><div><div class="exo-name">2. Leg curl allongé machine</div><div class="exo-note">Fémurs courts → isolation indispensable · descente contrôlée 3s</div><span class="tag tag-r">repos 2'30</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo ok"><div><div class="exo-name">2. Romanian deadlift Smith machine</div><div class="exo-note g">Tension d'étirement ischios · chef long · barre le long cuisses · descente 3s · dos neutre · genoux légèrement fléchis fixes · FP + JR Smith disponible</div><span class="tag tag-r">repos 2'30</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
+      <div class="exo"><div><div class="exo-name">3. Leg curl allongé machine</div><div class="exo-note">Fémurs courts → isolation indispensable · descente contrôlée 3s</div><span class="tag tag-r">repos 2'30</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
       <div class="exo"><div><div class="exo-name">3. Pendulum squat (FP) · Hack squat (JR)</div><div class="exo-note">Pendulum = arc naturel idéal · Hack squat = genoux dans l'axe</div><span class="tag tag-r">repos 2'30</span></div><div class="exo-r"><div class="exo-sets">3×8-10</div><div class="exo-pct">75%</div></div></div>
       <div class="exo"><div><div class="exo-name">4. Hip thrust machine</div><div class="exo-note">Isométrique 1s en haut · tronc long = avantage biomécanique</div><span class="tag tag-r">repos 2'</span></div><div class="exo-r"><div class="exo-sets">3×10</div><div class="exo-pct">72%</div></div></div>
       <div class="exo"><div><div class="exo-name">5. Mollets debout machine</div><div class="exo-note">Amplitude complète · descente lente 3s</div><span class="tag tag-r">repos 60s</span></div><div class="exo-r"><div class="exo-sets">4×12</div><div class="exo-pct">67%</div></div></div>
@@ -276,7 +278,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <div class="exo" style="background:rgba(123,111,212,0.05);border-left:2px solid var(--purple);"><div><div class="exo-name">3+4. Superset antagoniste <span class="badge" style="background:rgba(123,111,212,0.2);color:var(--purple);font-size:9px;">ENCHAÎNER SANS REPOS</span></div><div class="exo-note" style="color:var(--purple);">Facilitation réciproque · repos 45s après les DEUX</div></div><div class="exo-r"></div></div>
       <div class="exo" style="padding-left:20px;"><div><div class="exo-name">3. Adducteur machine assis</div><div class="exo-note">Amplitude complète · contraction 1s · enchaîner abducteur</div></div><div class="exo-r"><div class="exo-sets">3×20</div><div class="exo-pct">50%</div></div></div>
       <div class="exo" style="padding-left:20px;"><div><div class="exo-name">4. Abducteur machine assis</div><div class="exo-note">Fessier moyen · repos 45s après</div><span class="tag tag-r">repos 45s après abducteur</span></div><div class="exo-r"><div class="exo-sets">3×20</div><div class="exo-pct">50%</div></div></div>
-      <div class="exo hl-green"><div><div class="exo-name">5A. Leg curl debout uni Technogym <span class="badge b-new" style="font-size:9px;">FP</span> / 5B. Romanian deadlift Smith <span class="badge b-new" style="font-size:9px;">JR</span></div><div class="exo-note gr">Chef long ischio · FP : G+D puis repos · JR : barre le long cuisses · descente 3s · étirement ischio · dos neutre · genoux légèrement fléchis fixes</div><span class="tag tag-r">repos 60s après 2c</span></div><div class="exo-r"><div class="exo-sets">3×12-15</div><div class="exo-pct">60%</div></div></div>
+      <div class="exo hl-green"><div><div class="exo-name">5A. Leg curl debout uni Technogym <span class="badge b-new" style="font-size:9px;">FP</span> / 5B. Leg curl couché uni <span class="badge b-new" style="font-size:9px;">JR</span></div><div class="exo-note gr">Tension de contraction chef long · FP : debout G+D puis repos · JR : couché unilatéral · même logique de contraction</div><span class="tag tag-r">repos 60s après 2c</span></div><div class="exo-r"><div class="exo-sets">3×12-15</div><div class="exo-pct">60%</div></div></div>
       <div class="exo"><div><div class="exo-name">6. Mollets assis machine</div><div class="exo-note">Soléaire · amplitude complète · descente lente</div><span class="tag tag-r">repos 45–60s</span></div><div class="exo-r"><div class="exo-sets">4×20</div><div class="exo-pct">50%</div></div></div>
     </div>
   </div>
@@ -320,7 +322,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   <div id="si2" class="salle-note salle-fp">1RM mesuré sur câbles Fitness Park. Pour Gym80 : +10%.</div>
   <div class="field"><label>Exercice</label>
     <select id="rx">
-      <option>Presse 45°</option><option>Leg extension uni</option><option>Leg curl allongé</option><option>Leg curl assis</option><option>Leg curl debout uni</option><option>Romanian deadlift Smith</option><option>Pendulum squat</option><option>Hack squat</option><option>Hip thrust machine</option><option>Mollets debout</option><option>Mollets assis</option><option>Adducteur machine</option><option>Abducteur machine</option>
+      <option>Presse 45°</option><option>Leg extension uni</option><option>Leg curl allongé</option><option>Leg curl assis</option><option>Leg curl debout uni</option><option>Romanian deadlift Smith</option><option>Leg curl couché uni</option><option>Pendulum squat</option><option>Hack squat</option><option>Hip thrust machine</option><option>Mollets debout</option><option>Mollets assis</option><option>Adducteur machine</option><option>Abducteur machine</option>
       <option>Tirage bras tendus Technogym</option><option>Tirage bras tendus Pure Kraft High Row</option><option>Tirage vertical large</option><option>Tirage neutre</option><option>Rowing barre</option><option>Rowing Hammer</option><option>Rowing Technogym</option><option>Rowing T-bar</option><option>Rowing poulie basse</option>
       <option>Développé haltères</option><option>Machine déclinée Technogym</option><option>Poussée convergente (FP) / Presse pectorale assise Gym80 (JR)</option><option>Pec deck machine</option><option>Écarté poulie vis-à-vis banc 15°</option><option>Croisé poulie basse</option>
       <option>Élév lat poulie basse</option><option>Élév lat poulie basse finition</option><option>Élév lat machine</option><option>Oiseau poulie basse</option><option>Oiseau machine</option><option>Curl EZ</option><option>Curl marteau</option><option>Curl concentration</option><option>Triceps poulie</option><option>Triceps overhead</option>
@@ -329,9 +331,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   </div>
   <div class="g2">
     <div class="field"><label>Reps testées</label><select id="rr"><option value="3">3RM</option><option value="5">5RM</option></select></div>
-    <div class="field"><label>Charge (kg)</label><input type="number" id="rc" placeholder="ex: 80" min="1" max="500" step="0.5"/></div>
+    <div class="field"><label>Disques posés (kg)</label><input type="number" id="rc" placeholder="ex: 100" min="1" max="500" step="0.5"/></div>
   </div>
   <button class="btn" onclick="calcRM()">Calculer le 1RM</button>
+  <div id="rm-acc-info" style="display:none;font-size:11px;color:var(--amber);background:rgba(244,162,97,0.1);padding:6px 10px;border-radius:8px;margin-top:8px;"></div>
   <div id="rm-result" style="display:none;margin-top:14px;">
     <div class="rm-zones">
       <div class="rm-zone"><div class="rm-zone-label">1RM estimé</div><div class="rm-zone-val" id="v1rm">—</div><div class="rm-zone-sub">Brzycki</div></div>
@@ -399,6 +402,21 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
   </div>
 </div>
 
+<!-- MATÉRIEL -->
+<div id="tab-materiel" class="panel">
+  <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Poids des accessoires</div>
+  <div style="font-size:11px;color:var(--text3);margin-bottom:12px;">Saisis le poids de chaque accessoire une fois · l'app l'ajoute automatiquement à tes disques pour le calcul 1RM.</div>
+
+  <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:8px;">🟢 Fitness Park</div>
+  <div id="mat-fp"></div>
+
+  <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:8px;margin-top:16px;">🟡 John Reed</div>
+  <div id="mat-jr"></div>
+
+  <button class="btn" onclick="saveAccessoires()" style="margin-top:12px;">Enregistrer les accessoires</button>
+  <span class="confirm" id="mat-confirm">✓ Enregistré</span>
+</div>
+
 <!-- CHAT -->
 <div id="tab-chat" class="panel">
   <div class="chat-wrap">
@@ -463,7 +481,9 @@ async function initSupabase() {
     // Charger 1RM
     const rms = await sbFetch('rm_data?user_id=eq.franck&select=exercice,rm,pct,salle,date');
     if (rms) {
-      rms.forEach(r => { rmData[r.exercice] = { rm: r.rm, pct: r.pct, sal: r.salle, date: r.date }; });
+      rms.forEach(r => { 
+        rmData[r.exercice] = { rm: r.rm, pct: r.pct, sal: r.salle, date: r.date, exo: r.exercice };
+      });
     }
     // Charger historique séances
     const hist = await sbFetch('seances?user_id=eq.franck&select=*&order=created_at.desc&limit=100');
@@ -523,6 +543,7 @@ const SEANCES = [
   ]},
   {n:'J3 Legs A E1',e:[
     {n:'Presse 45°',s:3,r:'8-10',rp:"2'30–3'",p:75},
+    {n:'Romanian deadlift Smith',s:3,r:'8-10',rp:"2'30",p:75},
     {n:'Leg curl allongé',s:3,r:'8-10',rp:"2'30",p:75,g80p:true},
     {n:'Pendulum squat / Hack squat',nFP:'Pendulum squat',nJR:'Hack squat',s:3,r:'8-10',rp:"2'30",p:75,dual:true},
     {n:'Hip thrust machine',s:3,r:'10',rp:"2'",p:72},
@@ -549,7 +570,7 @@ const SEANCES = [
     {n:'Leg curl assis',s:4,r:'15-20',rp:"45–60s",p:55,g80p:true},
     {n:'Adducteur machine',s:3,r:'20',rp:"— enchaîner abducteur",p:50,g80p:true,superset:'start'},
     {n:'Abducteur machine',s:3,r:'20',rp:"45s après",p:50,g80p:true,superset:'end'},
-    {n:'Leg curl debout uni Technogym (FP) / Romanian deadlift Smith (JR)',nFP:'Leg curl debout uni',nJR:'Romanian deadlift Smith',s:3,r:'12-15',rp:"60s",p:60,dual:true},
+    {n:'Leg curl debout uni Technogym (FP) / Leg curl couché uni (JR)',nFP:'Leg curl debout uni',nJR:'Leg curl couché uni',s:3,r:'12-15',rp:"60s",p:60,dual:true},
     {n:'Mollets assis',s:4,r:'20',rp:"45–60s",p:50,g80p:true}
   ]}
 ];
@@ -560,12 +581,47 @@ const RC = {6:'#52B788',7:'#52B788',8:'#7B6FD4',9:'#F4A261',10:'#E63946'};
 const RBG = {6:'rgba(82,183,136,0.2)',7:'rgba(82,183,136,0.2)',8:'rgba(123,111,212,0.2)',9:'rgba(244,162,97,0.2)',10:'rgba(230,57,70,0.2)'};
 
 // ─── UI HELPERS ───────────────────────────────────────────────────────────────
+// Sauvegarde temporaire des saisies en cours de séance
+let seanceDraft = {};
+
+function saveDraft() {
+  const d = SEANCES[curDay];
+  d.e.forEach((ex, ei) => {
+    for (let i = 1; i <= ex.s; i++) {
+      const kgEl = document.getElementById(`inp-kg-${ei}-${i}`);
+      const repsEl = document.getElementById(`inp-reps-${ei}-${i}`);
+      if (kgEl) seanceDraft[`kg-${curDay}-${ei}-${i}`] = kgEl.value;
+      if (repsEl) seanceDraft[`reps-${curDay}-${ei}-${i}`] = repsEl.value;
+    }
+  });
+}
+
+function restoreDraft() {
+  const d = SEANCES[curDay];
+  d.e.forEach((ex, ei) => {
+    for (let i = 1; i <= ex.s; i++) {
+      const kgEl = document.getElementById(`inp-kg-${ei}-${i}`);
+      const repsEl = document.getElementById(`inp-reps-${ei}-${i}`);
+      const kgVal = seanceDraft[`kg-${curDay}-${ei}-${i}`];
+      const repsVal = seanceDraft[`reps-${curDay}-${ei}-${i}`];
+      if (kgEl && kgVal) kgEl.value = kgVal;
+      if (repsEl && repsVal) repsEl.value = repsVal;
+    }
+  });
+}
+
 function showTab(n) {
+  // Sauvegarder le draft si on quitte la séance
+  if (document.getElementById('tab-seance') && document.getElementById('tab-seance').classList.contains('active')) {
+    saveDraft();
+  }
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById('tab-' + n).classList.add('active');
   if (n === 'histo') renderHistorique();
+  // Restaurer le draft si on revient en séance
+  if (n === 'seance') setTimeout(restoreDraft, 50);
 }
 function togCard(hdr, id) { document.getElementById(id).classList.toggle('open'); hdr.classList.toggle('open'); }
 function togG(id) { document.getElementById(id).classList.toggle('open'); }
@@ -648,16 +704,12 @@ function renderSeance() {
   d.e.forEach((ex, ei) => {
     const dispName = ex.dual ? (sal === 'gym80' ? ex.nJR : ex.nFP) : ex.n;
     const rmKey = ex.dual ? (sal === 'gym80' ? ex.nJR : ex.nFP) : ex.n;
-    const rm = rmData[rmKey];
-    const applyCorr = sal === 'gym80' && ex.g80p;
-    const f = applyCorr ? 1.1 : 1.0;
+    const salSuffix = sal === 'gym80' ? '__jr' : '__fp';
+    const rm = rmData[rmKey + salSuffix] || rmData[rmKey];
     let ci = '<span style="color:var(--text3);font-size:11px;">→ Renseigner dans onglet 1RM</span>';
     if (rm && ex.p > 0) {
       const base = Math.round(rm.rm * ex.p / 100);
-      const adj = Math.round(base * f);
-      ci = applyCorr ?
-        `<span style="color:#F4A261;font-weight:600;">${adj} kg (Gym80 +10%)</span>` :
-        `<span style="color:#7B6FD4;font-weight:600;">${base} kg</span>`;
+      ci = `<span style="color:#7B6FD4;font-weight:600;">${base} kg</span>`;
     }
     const fpTag = ex.fp ? `<span style="font-size:10px;background:rgba(82,183,136,0.15);color:#52B788;padding:1px 5px;border-radius:6px;margin-left:4px;">${sal === 'gym80' ? 'JR' : 'FP'}</span>` : '';
     const tTag = ex.t ? '<span style="font-size:10px;background:rgba(72,202,228,0.15);color:#48CAE4;padding:1px 5px;border-radius:6px;margin-left:4px;">T-bar E2</span>' : '';
@@ -851,8 +903,16 @@ async function saveSeance() {
 function calcRM() {
   const exo = document.getElementById('rx').value;
   const reps = parseInt(document.getElementById('rr').value);
-  const charge = parseFloat(document.getElementById('rc').value);
-  if (!charge || isNaN(charge)) return;
+  const disques = parseFloat(document.getElementById('rc').value);
+  if (!disques || isNaN(disques)) return;
+  const accWeight = getAccessoireWeight(exo);
+  const charge = disques + accWeight;
+  if (accWeight > 0) {
+    document.getElementById('rm-acc-info').textContent = `${disques}kg disques + ${accWeight}kg accessoire = ${charge}kg total`;
+    document.getElementById('rm-acc-info').style.display = 'block';
+  } else {
+    document.getElementById('rm-acc-info').style.display = 'none';
+  }
   const rmBase = Math.round(charge / (1.0278 - 0.0278 * reps));
   const EXO_DUAL = [
     'Leg extension uni','Leg curl allongé','Leg curl assis','Mollets debout',
@@ -869,29 +929,26 @@ function calcRM() {
   document.getElementById('vg1').textContent = Math.round(rm * .78 * 1.1) + ' kg';
   document.getElementById('vg2').textContent = Math.round(rm * .68 * 1.1) + ' kg';
   document.getElementById('rm-result').style.display = 'block';
-  pendRM = { exo, rm, pct: 78, sal: rmSal };
+  const rmKey = `${exo}__${rmSal === 'gym80' ? 'jr' : 'fp'}`;
+  pendRM = { exo, rm, pct: 78, sal: rmSal, key: rmKey };
 }
 
 async function saveRM() {
   if (!pendRM) return;
   const date = new Date().toLocaleDateString('fr-FR');
-  rmData[pendRM.exo] = { rm: pendRM.rm, pct: 78, sal: pendRM.sal, date };
+  rmData[pendRM.key] = { rm: pendRM.rm, pct: 78, sal: pendRM.sal, date, exo: pendRM.exo };
 
   let savedCloud = false;
   setSyncStatus('loading');
   try {
-    // D'abord vérifier si le 1RM existe déjà
-    const checkRes = await fetch(`${SB_URL}/rest/v1/rm_data?user_id=eq.franck&exercice=eq.${encodeURIComponent(pendRM.exo)}`, {
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    // Upsert : d'abord DELETE puis INSERT pour forcer la mise à jour
+    const exoEnc = encodeURIComponent(pendRM.key);
+    await fetch(`${SB_URL}/rest/v1/rm_data?user_id=eq.franck&exercice=eq.${exoEnc}`, {
+      method: 'DELETE',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Prefer': 'return=minimal' }
     });
-    const existing = await checkRes.json();
-    const method = existing && existing.length > 0 ? 'PATCH' : 'POST';
-    const rmUrl = method === 'PATCH'
-      ? `${SB_URL}/rest/v1/rm_data?user_id=eq.franck&exercice=eq.${encodeURIComponent(pendRM.exo)}`
-      : `${SB_URL}/rest/v1/rm_data`;
-
-    const res = await fetch(rmUrl, {
-      method: method,
+    const res = await fetch(`${SB_URL}/rest/v1/rm_data`, {
+      method: 'POST',
       headers: {
         'apikey': SB_KEY,
         'Authorization': `Bearer ${SB_KEY}`,
@@ -900,7 +957,7 @@ async function saveRM() {
       },
       body: JSON.stringify({
         user_id: 'franck',
-        exercice: pendRM.exo,
+        exercice: pendRM.key,
         rm: pendRM.rm,
         pct: 78,
         salle: pendRM.sal,
@@ -912,7 +969,9 @@ async function saveRM() {
       sbOnline = true;
       setSyncStatus('ok', '✓ 1RM sauvegardé dans le cloud');
     } else {
-      throw new Error(await res.text());
+      const err = await res.text();
+      console.warn('Erreur saveRM:', err);
+      setSyncStatus('err', '⚠ 1RM sauvegardé localement');
     }
   } catch(e) {
     console.warn('Erreur save 1RM:', e);
@@ -933,10 +992,13 @@ function renderRMHisto() {
   const el = document.getElementById('rm-histo');
   const keys = Object.keys(rmData);
   if (!keys.length) { el.innerHTML = '<span style="color:var(--text3);font-size:13px;">Aucun 1RM enregistré.</span>'; return; }
-  let h = '<div style="overflow-x:auto;"><table class="rm-table"><thead><tr><th>Exercice</th><th>1RM</th><th>E1</th><th>E2</th><th>E3</th><th>G80 E1</th><th>Date</th></tr></thead><tbody>';
+  let h = '<div style="overflow-x:auto;"><table class="rm-table"><thead><tr><th>Exercice</th><th>Salle</th><th>1RM</th><th>E1 78%</th><th>E2 68%</th><th>E3 57%</th><th>Date</th></tr></thead><tbody>';
   keys.forEach(k => {
     const d = rmData[k];
-    h += `<tr><td style="font-weight:600;max-width:90px;word-break:break-word;font-size:11px;">${k}</td><td>${d.rm}</td><td>${Math.round(d.rm*.78)}</td><td>${Math.round(d.rm*.68)}</td><td>${Math.round(d.rm*.57)}</td><td style="color:var(--amber);">${Math.round(d.rm*.78*.9)}</td><td style="font-size:10px;color:var(--text3);">${d.date||'—'}</td></tr>`;
+    const salleTag = d.sal === 'gym80'
+      ? '<span style="font-size:10px;background:rgba(244,162,97,0.2);color:#F4A261;padding:1px 5px;border-radius:6px;">JR</span>'
+      : '<span style="font-size:10px;background:rgba(82,183,136,0.2);color:#52B788;padding:1px 5px;border-radius:6px;">FP</span>';
+    h += `<tr><td style="font-weight:600;max-width:90px;word-break:break-word;font-size:11px;">${k.replace('__fp','').replace('__jr','')}</td><td>${salleTag}</td><td>${d.rm}</td><td>${Math.round(d.rm*.78)}</td><td>${Math.round(d.rm*.68)}</td><td>${Math.round(d.rm*.57)}</td><td style="font-size:10px;color:var(--text3);">${d.date||'—'}</td></tr>`;
   });
   h += '</tbody></table></div>';
   el.innerHTML = h;
@@ -1029,8 +1091,81 @@ async function send() {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
+// ─── ACCESSOIRES ─────────────────────────────────────────────────────────────
+const ACCESSOIRES_DEF = {
+  fp: [
+    {id:'presse_fp', label:'Chariot Presse 45° FP', exos:['Presse 45°']},
+    {id:'pendulum_fp', label:'Chariot Pendulum squat FP', exos:['Pendulum squat / Hack squat','Pendulum squat']},
+    {id:'smith_fp', label:'Barre Smith FP', exos:['Rowing barre','Romanian deadlift Smith']},
+    {id:'hip_fp', label:'Chariot Hip thrust FP', exos:['Hip thrust machine']},
+    {id:'tbar_fp', label:'Barre T-bar FP', exos:['Rowing T-bar']},
+    {id:'mollets_assis_fp', label:'Chariot Mollets assis FP', exos:['Mollets assis machine']},
+  ],
+  jr: [
+    {id:'presse_jr', label:'Chariot Presse 45° JR', exos:['Presse 45°']},
+    {id:'hack_jr', label:'Chariot Hack squat JR', exos:['Pendulum squat / Hack squat','Hack squat']},
+    {id:'smith_jr', label:'Barre Smith JR', exos:['Rowing barre','Romanian deadlift Smith']},
+    {id:'hip_jr', label:'Chariot Hip thrust JR', exos:['Hip thrust machine']},
+    {id:'tbar_jr', label:'Barre T-bar JR', exos:['Rowing T-bar']},
+    {id:'mollets_assis_jr', label:'Chariot Mollets assis JR', exos:['Mollets assis machine']},
+  ]
+};
+
+let accessoires = {};
+
+function loadAccessoires() {
+  try {
+    const saved = localStorage.getItem('spo_accessoires_franck');
+    if (saved) accessoires = JSON.parse(saved);
+  } catch(e) {}
+  renderAccessoires();
+}
+
+function renderAccessoires() {
+  ['fp','jr'].forEach(salle => {
+    const el = document.getElementById('mat-' + salle);
+    if (!el) return;
+    let h = '';
+    ACCESSOIRES_DEF[salle].forEach(acc => {
+      const val = accessoires[acc.id] || '';
+      h += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="flex:1;font-size:12px;color:var(--text2);">${acc.label}</div>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <input type="number" id="${acc.id}" value="${val}" placeholder="0" min="0" max="200" step="0.5"
+            style="width:70px;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:6px 8px;text-align:center;"/>
+          <span style="font-size:11px;color:var(--text3);">kg</span>
+        </div>
+      </div>`;
+    });
+    el.innerHTML = h;
+  });
+}
+
+function saveAccessoires() {
+  [...ACCESSOIRES_DEF.fp, ...ACCESSOIRES_DEF.jr].forEach(acc => {
+    const el = document.getElementById(acc.id);
+    if (el) accessoires[acc.id] = parseFloat(el.value) || 0;
+  });
+  try { localStorage.setItem('spo_accessoires_franck', JSON.stringify(accessoires)); } catch(e) {}
+  const c = document.getElementById('mat-confirm');
+  c.style.display = 'inline';
+  setTimeout(() => c.style.display = 'none', 2000);
+}
+
+function getAccessoireWeight(exoName) {
+  const salleKey = sal === 'gym80' ? 'jr' : 'fp';
+  const defs = ACCESSOIRES_DEF[salleKey];
+  for (const acc of defs) {
+    if (acc.exos.some(e => exoName.includes(e) || e.includes(exoName))) {
+      return accessoires[acc.id] || 0;
+    }
+  }
+  return 0;
+}
+
 // ─── DÉMARRAGE ────────────────────────────────────────────────────────────────
 selSeance(0, document.querySelector('.day-btn'));
+loadAccessoires();
 initSupabase();
 </script>
 </body>
