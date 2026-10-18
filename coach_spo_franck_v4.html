@@ -708,8 +708,10 @@ function renderSeance() {
     const rm = rmData[rmKey + salSuffix] || rmData[rmKey];
     let ci = '<span style="color:var(--text3);font-size:11px;">→ Renseigner dans onglet 1RM</span>';
     if (rm && ex.p > 0) {
-      const base = Math.round(rm.rm * ex.p / 100);
-      ci = `<span style="color:#7B6FD4;font-weight:600;">${base} kg</span>`;
+      const accW = getAccessoireWeight(ex.dual ? (sal === 'gym80' ? ex.nJR : ex.nFP) : ex.n);
+      const base = Math.max(0, Math.round(rm.rm * ex.p / 100) - accW);
+      const accNote = accW > 0 ? `<span style="color:var(--text3);font-size:10px;margin-left:4px;">(+${accW}kg matériel)</span>` : '';
+      ci = `<span style="color:#7B6FD4;font-weight:600;">${base} kg disques</span>${accNote}`;
     }
     const fpTag = ex.fp ? `<span style="font-size:10px;background:rgba(82,183,136,0.15);color:#52B788;padding:1px 5px;border-radius:6px;margin-left:4px;">${sal === 'gym80' ? 'JR' : 'FP'}</span>` : '';
     const tTag = ex.t ? '<span style="font-size:10px;background:rgba(72,202,228,0.15);color:#48CAE4;padding:1px 5px;border-radius:6px;margin-left:4px;">T-bar E2</span>' : '';

@@ -159,7 +159,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
       <span class="ver">v4.0</span>
     </div>
   </div>
-  <div class="hdr-sub">Franck · Push Pull Legs · Haute fréquence</div>
+  <div class="hdr-sub">Alex · Push Pull Legs · Haute fréquence</div>
 </div>
 
 <div class="sync-banner" id="sync-banner"></div>
@@ -505,17 +505,17 @@ async function initSupabase() {
 // ─── FALLBACK LOCAL ────────────────────────────────────────────────────────────
 function loadFromLocal() {
   try {
-    const saved = localStorage.getItem('spo_rm_franck');
+    const saved = localStorage.getItem('spo_rm_alex');
     if (saved) rmData = JSON.parse(saved);
-    const hist = localStorage.getItem('spo_seances_franck');
+    const hist = localStorage.getItem('spo_seances_alex');
     if (hist) seancesHistory = JSON.parse(hist);
   } catch(e) {}
 }
 
 function saveToLocal() {
   try {
-    localStorage.setItem('spo_rm_franck', JSON.stringify(rmData));
-    localStorage.setItem('spo_seances_franck', JSON.stringify(seancesHistory));
+    localStorage.setItem('spo_rm_alex', JSON.stringify(rmData));
+    localStorage.setItem('spo_seances_alex', JSON.stringify(seancesHistory));
   } catch(e) {}
 }
 
@@ -706,8 +706,10 @@ function renderSeance() {
     const rm = rmData[rmKey + salSuffix] || rmData[rmKey];
     let ci = '<span style="color:var(--text3);font-size:11px;">→ Renseigner dans onglet 1RM</span>';
     if (rm && ex.p > 0) {
-      const base = Math.round(rm.rm * ex.p / 100);
-      ci = `<span style="color:#7B6FD4;font-weight:600;">${base} kg</span>`;
+      const accW = getAccessoireWeight(ex.dual ? (sal === 'gym80' ? ex.nJR : ex.nFP) : ex.n);
+      const base = Math.max(0, Math.round(rm.rm * ex.p / 100) - accW);
+      const accNote = accW > 0 ? `<span style="color:var(--text3);font-size:10px;margin-left:4px;">(+${accW}kg matériel)</span>` : '';
+      ci = `<span style="color:#7B6FD4;font-weight:600;">${base} kg disques</span>${accNote}`;
     }
     const fpTag = ex.fp ? `<span style="font-size:10px;background:rgba(82,183,136,0.15);color:#52B788;padding:1px 5px;border-radius:6px;margin-left:4px;">${sal === 'gym80' ? 'JR' : 'FP'}</span>` : '';
     const tTag = ex.t ? '<span style="font-size:10px;background:rgba(72,202,228,0.15);color:#48CAE4;padding:1px 5px;border-radius:6px;margin-left:4px;">T-bar E2</span>' : '';
@@ -1057,7 +1059,7 @@ function renderHistorique() {
 }
 
 // ─── COACH IA ─────────────────────────────────────────────────────────────────
-const SYS = `Tu es un coach Personal Training expert. Programme SPO v4 pour Franck.
+const SYS = `Tu es un coach Personal Training expert. Programme SPO v4 pour Alex.
 Profil : 56 ans · 177cm · 79kg · 15-17% MG · muscle sec + légère recompo · 3 ans ancienneté (intermédiaire)
 Salles : Fitness Park Décines câbles (FP, référence) + John Reed Lyon Gym80 courroies (JR, +10% charge affichée)
 Morpho : membres courts · tronc long · cage étroite · petites clavicules · points forts bras/dos · points faibles pecs/épaules/ischios · grand droit développé · transverse déficient
@@ -1113,7 +1115,7 @@ let accessoires = {};
 
 function loadAccessoires() {
   try {
-    const saved = localStorage.getItem('spo_accessoires_franck');
+    const saved = localStorage.getItem('spo_accessoires_alex');
     if (saved) accessoires = JSON.parse(saved);
   } catch(e) {}
   renderAccessoires();
@@ -1144,7 +1146,7 @@ function saveAccessoires() {
     const el = document.getElementById(acc.id);
     if (el) accessoires[acc.id] = parseFloat(el.value) || 0;
   });
-  try { localStorage.setItem('spo_accessoires_franck', JSON.stringify(accessoires)); } catch(e) {}
+  try { localStorage.setItem('spo_accessoires_alex', JSON.stringify(accessoires)); } catch(e) {}
   const c = document.getElementById('mat-confirm');
   c.style.display = 'inline';
   setTimeout(() => c.style.display = 'none', 2000);
